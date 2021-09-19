@@ -7,3 +7,14 @@ stages:
   - build
   - test
   - deploy
+
+build-job:
+  stage: build
+  before_script:
+    - apk add --no-cache docker-compose
+    - echo "Building Frontend/Backend Docker Image"
+  script:
+    - docker build -t frontend -f ./frontend/Dockerfile ./frontend/ 
+    - docker build -t backend -f ./backend/Dockerfile ./backend/ 
+  after_script:  
+    - echo "Successful! Frontend/Backend are builded!" 
