@@ -28,4 +28,15 @@ backend-test-job:
   script:
     - docker-compose run --entrypoint "npm run unittest" backend
   after_script:    
-    - echo "Coverage is at 90%"
+    - echo "Backend tests Done!"
+
+frontend-test-job:
+  stage: test
+  before_script:
+    - cd frontend
+    - apk add --no-cache docker-compose
+    - echo "Running unit tests."
+  script:
+    - docker-compose run --entrypoint "npm run test" frontend
+  after_script:        
+    - echo "Frontend Tests Done!" 
