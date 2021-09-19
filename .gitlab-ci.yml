@@ -40,3 +40,16 @@ frontend-test-job:
     - docker-compose run --entrypoint "npm run test" frontend
   after_script:        
     - echo "Frontend Tests Done!" 
+
+deploy-job:
+  stage: deploy  
+  before_script:
+    - docker build -t fmaachadoo/workshopcientrega02:frontend -f ./frontend/Dockerfile ./frontend/ 
+    - echo "$PASSWORD" | docker login -u "$USER" "docker.io" --password-stdin
+    - echo "Deploying! 🤞"
+  script:    
+    - docker build -t fmaachadoo/workshopcientrega02:backend -f ./backend/Dockerfile ./backend/ 
+    - docker push fmaachadoo/workshopcientrega02:frontend
+    - docker push fmaachadoo/workshopcientrega02:backend
+  after_script:
+    - echo "✅ The application has been successfully deployed! ✅"
